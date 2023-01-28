@@ -10,6 +10,19 @@
     "strictPropertyInitialization": false,
     "skipLibCheck": true,
     "outDir": "./build",
-    "rootDir": "."
+    "rootDir": ".",
+    "baseUrl": ".",
+
+    "paths": {
+      "@modules/*": [
+        "./src/modules/*"
+      ],
+      "@shared/*": [
+        "./src/shared/*"
+      ],
+      "@middlewares/*": [
+        "./src/shared/middleares/*"
+      ],
+    }
   }
 }

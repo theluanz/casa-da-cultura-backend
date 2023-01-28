@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { ICreateWorkshopDTO } from '../../dtos/ICreateWorkshopDTO';
 import { CreateWorkshopUseCase } from './CreateWorkShopUseCase';
+import { AppError } from '@shared/errors/AppError';
 
 class CreateWorkshopController {
   async handle(request: Request, response: Response) {
@@ -14,7 +15,8 @@ class CreateWorkshopController {
 
     return response.json(workshop);
   }
-  hi(request: Request, response: Response) {
+  async hi(request: Request, response: Response) {
+    throw new AppError('hi',502);
     return response.json({ message: 'hi' });
   }
 }

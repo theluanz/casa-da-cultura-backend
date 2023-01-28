@@ -1,5 +1,5 @@
-import { prismaClient } from "../../../../database/prismaClient";
-import { ICreateWorkshopDTO } from "../../dtos/ICreateWorkshopDTO";
+import { ICreateWorkshopDTO } from "@modules/workshops/dtos/ICreateWorkshopDTO";
+import { prismaClient } from "@shared/database/prismaClient";
 
 export class CreateWorkshopUseCase {
   async execute({ name, description, active }: ICreateWorkshopDTO) {
