@@ -1,0 +1,14 @@
+version: '3'
+services:
+  db:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_DB: casa_cultura
+      POSTGRES_USER: cultura
+      POSTGRES_PASSWORD: password
+    networks:
+      - app-network
+    ports:
+      - 5432:5432
+networks:
+  app-network:
