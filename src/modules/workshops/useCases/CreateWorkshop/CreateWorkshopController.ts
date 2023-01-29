@@ -16,7 +16,6 @@ class CreateWorkshopController {
     return response.json(workshop);
   }
   async hi(request: Request, response: Response) {
-    throw new AppError('hi',502);
     return response.json({ message: 'hi' });
   }
 }
