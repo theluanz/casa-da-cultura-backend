@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
+import { prismaClient } from '@shared/database/prismaClient';
+import { AppError } from '@shared/errors/AppError';
 
 interface IJwtInfo {
   id: string;
@@ -7,24 +9,30 @@ interface IJwtInfo {
   exp: number;
 }
 
-
-const authMiddleware = (request: Request, response: Response, next: NextFunction) => {
+const authMiddleware = async (request: Request, response: Response, next: NextFunction) => {
   // Get the token from the headers
   const token = request.headers.authorization;
 
   if (!token) {
-    return response.status(401).json({ message: 'Invalid token' });
+    throw new AppError('Invalid Token', 401);
+  }
+  const decoded = jwt.verify(token, process.env.JWT_SECRET) as IJwtInfo;
+  request.userId = decoded.id;
+
+  const user = await prismaClient.user.findUniqueOrThrow({
+    where: {
+      id: request.userId,
+    },
+    select: {
+      role: true
+    }
+  });
+  
+  if (user.role.length === 0) {
+    throw new AppError('Invalid Token', 401);
   }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET) as IJwtInfo;
-    console.log(decoded)
-    request.userId = decoded.id;
-    console.log(request.userId);
-    next();
-  } catch (error) {
-    return response.status(401).json({ message: 'Invalid token' });
-  }
+  next();
 };
 
 export { authMiddleware };
