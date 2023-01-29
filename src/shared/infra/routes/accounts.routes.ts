@@ -5,6 +5,7 @@ import { ValidateJWTController } from '@modules/accounts/useCases/ValidateJWT/Va
 import { authMiddleware } from '@shared/middleares/authMiddleware';
 import { ensureIsAdminMiddleware } from '@shared/middleares/ensureIsAdminMiddleware';
 import { RemoveUserController } from '@modules/accounts/useCases/RemoveUser/RemoveUserController';
+import { UpdateUserController } from '@modules/accounts/useCases/UpdateUser/UpdateUserController';
 
 const accountsRoutes = Router();
 
@@ -12,6 +13,7 @@ const createUserController = new CreateUserController();
 const authenticateController = new AuthenticateController();
 const validateJWTController = new ValidateJWTController();
 const removeUserController = new RemoveUserController();
+const updateUserController = new UpdateUserController();
 
 accountsRoutes.post('/account', createUserController.handle);
 accountsRoutes.delete(
@@ -19,6 +21,11 @@ accountsRoutes.delete(
   authMiddleware,
   ensureIsAdminMiddleware,
   removeUserController.handle,
+);
+accountsRoutes.patch(
+  '/account/:id',
+  authMiddleware,
+  updateUserController.handle,
 );
 
 accountsRoutes.post('/auth', authenticateController.handle);
