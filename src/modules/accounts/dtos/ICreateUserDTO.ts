@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 const ROLE_ENUM = ['STUDENT', 'TEACHER', 'ADMIN'] as const;
 
-const CreateUserDTO = z.object({
+const ICreateUserDTO = z.object({
   email: z.string().email({message: 'Email inválido'}),
   password: z.string().min(6, {message: 'Senha deve ter no mínimo 6 caracteres'}),
   name: z.string().min(3, {message: 'Nome deve ter no mínimo 3 caracteres'}),
@@ -11,4 +11,4 @@ const CreateUserDTO = z.object({
   role: z.array(z.enum(ROLE_ENUM)).optional().default(['STUDENT' as const]),
 });
 
-export { CreateUserDTO };
+export { ICreateUserDTO };

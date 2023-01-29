@@ -1,12 +1,12 @@
-import { CreateUserDTO } from '@modules/accounts/dtos/CreateUserDTO';
+import { ICreateUserDTO } from '@modules/accounts/dtos/ICreateUserDTO';
 import { prismaClient } from '@shared/database/prismaClient';
 import { z } from 'zod';
 import { hash } from 'bcrypt';
 import { AppError } from '@shared/errors/AppError';
 
 class CreateUserUseCase {
-  async execute({ email, password, name, bornDate, cpf, role }: z.infer<typeof CreateUserDTO>) {
-    const validateUser = CreateUserDTO.safeParse({ email, password, name,bornDate, cpf, role });
+  async execute({ email, password, name, bornDate, cpf, role }: z.infer<typeof ICreateUserDTO>) {
+    const validateUser = ICreateUserDTO.safeParse({ email, password, name,bornDate, cpf, role });
     if (!validateUser.success) {
       throw new AppError(validateUser.error.message, 400);
     }
