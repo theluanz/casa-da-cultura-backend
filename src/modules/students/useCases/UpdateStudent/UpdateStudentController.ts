@@ -7,7 +7,7 @@ class UpdateStudentController {
     const { active, bornDate, cpf, fatherName, motherName, name, period } = request.body;
     const updateStudentUseCase = new UpdateStudentUseCase();
 
-    await updateStudentUseCase.execute({
+    const student = await updateStudentUseCase.execute({
       id,
       active,
       bornDate,
@@ -18,7 +18,7 @@ class UpdateStudentController {
       period,
     });
 
-    return response.status(201).json({ status: 'Usuário removido com sucesso' });
+    return response.status(201).json(student);
   }
 }
 
