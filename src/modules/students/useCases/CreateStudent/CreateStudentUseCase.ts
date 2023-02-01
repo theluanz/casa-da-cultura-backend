@@ -1,6 +1,5 @@
 import { prismaClient } from '@shared/database/prismaClient';
 import { z } from 'zod';
-import { hash } from 'bcrypt';
 import { AppError } from '@shared/errors/AppError';
 import { ICreateStudentDTO } from '@modules/students/dtos/ICreateStudentDTO';
 
