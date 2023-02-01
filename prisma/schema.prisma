@@ -43,3 +43,24 @@ enum Role {
   TEACHER
   STUDENT
 }
+
+model Student {
+  id         String   @id @default(uuid())
+  name       String
+  cpf        String   @unique
+  motherName String?
+  fatherName String?
+  bornDate   DateTime
+  period     Period[]
+  updatedAt  DateTime @updatedAt
+  createdAt  DateTime @default(now())
+  active     Boolean  @default(true)
+
+  @@map("students")
+}
+
+enum Period {
+  MORNING
+  AFTERNOON
+  NIGHT
+}
