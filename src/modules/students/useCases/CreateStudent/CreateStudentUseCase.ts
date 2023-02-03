@@ -27,7 +27,7 @@ class CreateStudentUseCase {
 
     const student = await prismaClient.student.create({
       data: {
-        bornDate,
+        bornDate: new Date(bornDate),
         cpf,
         name,
         period,

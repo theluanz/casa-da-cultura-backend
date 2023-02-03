@@ -15,6 +15,7 @@ class UpdateStudentUseCase {
     period,
   }: z.infer<typeof IUpdateStudentDTO>) {
     const validateStudent = IUpdateStudentDTO.safeParse({
+      id,
       active,
       bornDate,
       cpf,
@@ -30,7 +31,7 @@ class UpdateStudentUseCase {
 
     const studentExists = await prismaClient.student.findUniqueOrThrow({
       where: {
-        id,
+        id: validateStudent.data.id,
       },
     });
 

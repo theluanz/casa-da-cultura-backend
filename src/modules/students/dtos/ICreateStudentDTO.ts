@@ -4,14 +4,8 @@ const PERIOD_ENUM = ['MORNING', 'AFTERNOON', 'NIGHT'] as const;
 
 const ICreateStudentDTO = z.object({
   name: z.string().min(3, { message: 'Nome deve ter no mínimo 3 caracteres' }),
-  motherName: z
-    .string()
-    .min(3, { message: 'Nome da mãe deve ter no mínimo 3 caracteres' })
-    .optional(),
-  fatherName: z
-    .string()
-    .min(3, { message: 'Nome do pai deve ter no mínimo 3 caracteres' })
-    .optional(),
+  motherName: z.string().optional(),
+  fatherName: z.string().optional(),
   cpf: z.string().length(11, { message: 'CPF deve ter 11 caracteres' }),
   bornDate: z
     .string()

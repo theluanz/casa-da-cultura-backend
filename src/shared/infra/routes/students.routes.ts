@@ -7,26 +7,21 @@ import { ReadStudentsController } from '@modules/students/useCases/ReadStudents/
 import { RemoveStudentController } from '@modules/students/useCases/RemoveStudent/RemoveStudentController';
 import { UpdateStudentController } from '@modules/students/useCases/UpdateStudent/UpdateStudentController';
 
-const workshopsRoutes = Router();
+const studentsRoutes = Router();
 const createStudentController = new CreateStudentController();
 const readStudentController = new ReadStudentController();
 const readStudentsController = new ReadStudentsController();
 const removeStudentsController = new RemoveStudentController();
 const updateStudentController = new UpdateStudentController();
 
-workshopsRoutes.post(
-  '/student',
-  authMiddleware,
-  ensureIsAdminMiddleware,
-  createStudentController.handle,
-);
+studentsRoutes.post('/student', authMiddleware, createStudentController.handle);
 
-workshopsRoutes.get('/student/:id', authMiddleware, readStudentController.handle);
+studentsRoutes.get('/student/:id', authMiddleware, readStudentController.handle);
 
-workshopsRoutes.delete('/student/:id', authMiddleware, removeStudentsController.handle);
+studentsRoutes.delete('/student/:id', authMiddleware, removeStudentsController.handle);
 
-workshopsRoutes.patch('/student/:id', authMiddleware, updateStudentController.handle);
+studentsRoutes.patch('/student/:id', authMiddleware, updateStudentController.handle);
 
-workshopsRoutes.get('/students', authMiddleware, readStudentsController.handle);
+studentsRoutes.get('/students', authMiddleware, readStudentsController.handle);
 
-export { workshopsRoutes };
+export { studentsRoutes };
