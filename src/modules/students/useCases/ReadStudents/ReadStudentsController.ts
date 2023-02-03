@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { ReadStudentsUseCase } from '../ReadStudents/ReadStudentsUseCase';
 
-class RemoveStudentController {
+class ReadStudentsController {
   async handle(request: Request, response: Response) {
     const { p } = request.query;
     const readStudentsUseCase = new ReadStudentsUseCase();
@@ -12,4 +12,4 @@ class RemoveStudentController {
   }
 }
 
-export { RemoveStudentController };
+export { ReadStudentsController };
