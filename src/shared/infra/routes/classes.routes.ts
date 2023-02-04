@@ -13,4 +13,6 @@ classesRoutes.post('/class', authMiddleware, ensureIsAdminMiddleware, createClas
 
 classesRoutes.get('/class/:id', authMiddleware, ensureIsAdminMiddleware, readClassController.handle);
 
+classesRoutes.delete('/class/:id', authMiddleware, ensureIsAdminMiddleware, readClassController.handle);
+
 export { classesRoutes };
