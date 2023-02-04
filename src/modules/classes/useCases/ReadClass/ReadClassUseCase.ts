@@ -37,6 +37,19 @@ class ReadClassUseCase {
             },
           },
         },
+        ClassStudents: {
+          select: {
+            students: {
+              select: {
+                id: true,
+                name: true,
+                motherName: true,
+                fatherName: true,
+                active: true,
+              },
+            },
+          },
+        },
       },
     });
     return classExists;
