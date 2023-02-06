@@ -12,27 +12,94 @@ datasource db {
 }
 
 model Workshop {
-  id          String   @id @default(uuid())
-  name        String
-  description String
-  updatedAt   DateTime @updatedAt
-  createdAt   DateTime @default(now())
-  active      Boolean  @default(true)
+  id            String          @id @default(uuid())
+  name          String
+  description   String
+  updatedAt     DateTime        @updatedAt
+  createdAt     DateTime        @default(now())
+  active        Boolean         @default(true)
+  WorkshopClass WorkshopClass[]
 
   @@map("workshops")
 }
 
+model Class {
+  id            String          @id @default(uuid())
+  year          Int
+  day_week      DayWeek
+  start_time    String
+  end_time      String
+  updatedAt     DateTime        @updatedAt
+  createdAt     DateTime        @default(now())
+  active        Boolean         @default(true)
+  WorkshopClass WorkshopClass[]
+  ClassTeachers ClassTeachers[]
+  ClassStudents ClassStudents[]
+
+  @@map("classes")
+}
+
+model WorkshopClass {
+  id             String   @id @default(uuid())
+  workshops      Workshop @relation(fields: [fk_id_workshop], references: [id])
+  classes        Class    @relation(fields: [fk_id_class], references: [id])
+  fk_id_workshop String
+  fk_id_class    String   @unique()
+  updatedAt      DateTime @updatedAt
+  createdAt      DateTime @default(now())
+  active         Boolean  @default(true)
+
+  @@map("workshop_classes")
+}
+
+model ClassTeachers {
+  id            String   @id @default(uuid())
+  teachers      User     @relation(fields: [fk_id_teacher], references: [id])
+  classes       Class    @relation(fields: [fk_id_class], references: [id])
+  fk_id_class   String
+  fk_id_teacher String
+  updatedAt     DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  active        Boolean  @default(true)
+
+  @@map("class_teachers")
+}
+
+model ClassStudents {
+  id            String   @id @default(uuid())
+  students      Student  @relation(fields: [fk_id_student], references: [id])
+  classes       Class    @relation(fields: [fk_id_class], references: [id])
+  fk_id_class   String
+  fk_id_student String
+  updatedAt     DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  active        Boolean  @default(true)
+
+  @@map("class_students")
+}
+
+enum DayWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  name      String
-  role      Role[]
-  cpf       String   @unique
-  bornDate  DateTime
-  updatedAt DateTime @updatedAt
-  createdAt DateTime @default(now())
-  active    Boolean  @default(true)
+  id            String          @id @default(uuid())
+  email         String          @unique
+  password      String
+  name          String
+  role          Role[]
+  cpf           String          @unique
+  bornDate      DateTime
+  updatedAt     DateTime        @updatedAt
+  createdAt     DateTime        @default(now())
+  active        Boolean         @default(true)
+  ClassTeachers ClassTeachers[]
 
   @@map("users")
 }
@@ -45,16 +112,17 @@ enum Role {
 }
 
 model Student {
-  id         String   @id @default(uuid())
-  name       String
-  cpf        String   @unique
-  motherName String?
-  fatherName String?
-  bornDate   DateTime
-  period     Period[]
-  updatedAt  DateTime @updatedAt
-  createdAt  DateTime @default(now())
-  active     Boolean  @default(true)
+  id            String          @id @default(uuid())
+  name          String
+  cpf           String          @unique
+  motherName    String?
+  fatherName    String?
+  bornDate      DateTime
+  period        Period[]
+  updatedAt     DateTime        @updatedAt
+  createdAt     DateTime        @default(now())
+  active        Boolean         @default(true)
+  ClassStudents ClassStudents[]
 
   @@map("students")
 }

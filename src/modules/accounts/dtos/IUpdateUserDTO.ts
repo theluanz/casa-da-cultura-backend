@@ -1,4 +1,3 @@
-import { hash } from 'bcrypt';
 import { z } from 'zod';
 
 const ROLE_ENUM = ['STUDENT', 'TEACHER', 'ADMIN'] as const;
