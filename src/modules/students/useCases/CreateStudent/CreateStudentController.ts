@@ -12,8 +12,7 @@ class CreateStudentController {
       cpf,
       name,
       period,
-      fatherName,
-      motherName,
+      
     });
     return response.status(201).json(newStudent);
   }

@@ -123,7 +123,7 @@ model Student {
   ClassStudents ClassStudents[]
   Parent        Parent?         @relation(fields: [parentId], references: [id])
   parentId      String?
-  Adress        Adress         @relation(fields: [adressId], references: [id])
+  Address        Address         @relation(fields: [adressId], references: [id])
   adressId      String
 
   updatedAt     DateTime        @updatedAt
@@ -145,7 +145,7 @@ model Parent {
   @@map("parents")
 }
 
-model Adress {
+model Address {
   id           String    @id @default(uuid())
   street       String
   number       String?
@@ -155,7 +155,7 @@ model Adress {
   createdAt    DateTime  @default(now())
   Student      Student[]
 
-  @@map("adresses")
+  @@map("addresses")
 }
 
 enum Period {

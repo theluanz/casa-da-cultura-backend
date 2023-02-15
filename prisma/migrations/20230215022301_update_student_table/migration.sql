@@ -29,7 +29,7 @@ CREATE TABLE "parents" (
 );
 
 -- CreateTable
-CREATE TABLE "adresses" (
+CREATE TABLE "addresses" (
     "id" TEXT NOT NULL,
     "street" TEXT NOT NULL,
     "number" TEXT,
@@ -38,7 +38,7 @@ CREATE TABLE "adresses" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "adresses_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "addresses_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -51,4 +51,4 @@ CREATE UNIQUE INDEX "parents_rg_key" ON "parents"("rg");
 ALTER TABLE "students" ADD CONSTRAINT "students_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "parents"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "students" ADD CONSTRAINT "students_adressId_fkey" FOREIGN KEY ("adressId") REFERENCES "adresses"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "students" ADD CONSTRAINT "students_adressId_fkey" FOREIGN KEY ("adressId") REFERENCES "addresses"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
