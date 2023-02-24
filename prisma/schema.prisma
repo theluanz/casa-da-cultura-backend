@@ -118,17 +118,19 @@ model Student {
   rg            String
   phone         String?
   bornDate      DateTime
+  schooling     String
   
   period        Period[]
   ClassStudents ClassStudents[]
   Parent        Parent?         @relation(fields: [parentId], references: [id])
   parentId      String?
-  Address        Address         @relation(fields: [adressId], references: [id])
-  adressId      String
+  Address       Address         @relation(fields: [addressId], references: [id])
+  addressId     String
 
-  updatedAt     DateTime        @updatedAt
-  createdAt     DateTime        @default(now())
-  active        Boolean         @default(true)
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  active    Boolean  @default(true)
+
   @@map("students")
 }
 
