@@ -11,18 +11,21 @@ const ICreateStudentDTO = z.object({
   period: z.array(z.enum(PERIOD_ENUM)),
   phone: z.string().optional(),
   rg: z.string(),
+  schooling: z.string(),
   address: z.object({
     street: z.string(),
     number: z.string().optional(),
     complement: z.string().optional(),
     neighborhood: z.string(),
   }),
-  parent: z.object({
-    name: z.string(),
-    cpf: z.string().length(11, { message: 'CPF deve ter 11 caracteres' }),
-    rg: z.string().optional(),
-    phone: z.string(),
-  }).optional(),
+  parent: z
+    .object({
+      name: z.string(),
+      cpf: z.string().length(11, { message: 'CPF deve ter 11 caracteres' }),
+      rg: z.string().optional(),
+      phone: z.string(),
+    })
+    .optional(),
 });
 
 export { ICreateStudentDTO };

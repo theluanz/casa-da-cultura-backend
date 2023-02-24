@@ -14,6 +14,7 @@ class CreateStudentUseCase {
     period,
     rg,
     phone,
+    schooling,
   }: z.infer<typeof ICreateStudentDTO>) {
     const validateStudent = ICreateStudentDTO.safeParse({
       bornDate,
@@ -24,6 +25,7 @@ class CreateStudentUseCase {
       period,
       rg,
       phone,
+      schooling,
     });
 
     if (!validateStudent.success) {
@@ -36,55 +38,46 @@ class CreateStudentUseCase {
         throw new AppError('Responsável é obrigatório para menores de idade', 400);
       }
 
-      const parentCreated = await prismaClient.parent.upsert({
-        where: {
-          cpf: validateStudent.data.parent.cpf,
-        },
-        update: {
-          name: validateStudent.data.parent.name,
-          phone: validateStudent.data.parent.phone,
-          rg: validateStudent.data.parent.rg,
-        },
-        create: {
-          name: validateStudent.data.parent.name,
-          phone: validateStudent.data.parent.phone,
-          rg: validateStudent.data.parent.rg,
-          cpf: validateStudent.data.parent.cpf,
-        },
-      });
-
-      const addressCreated = await prismaClient.address.create({
-        data: {
-          complement: validateStudent.data.address.complement,
-          neighborhood: validateStudent.data.address.neighborhood,
-          number: validateStudent.data.address.number,
-          street: validateStudent.data.address.street,
-        },
-      });
-
       const student = await prismaClient.student.create({
         data: {
-          bornDate: new Date(validateStudent.data.bornDate),
-          cpf: validateStudent.data.cpf,
           name: validateStudent.data.name,
-          period: validateStudent.data.period,
+          cpf: validateStudent.data.cpf,
           rg: validateStudent.data.rg,
+          bornDate: new Date(validateStudent.data.bornDate),
+          period: validateStudent.data.period,
           phone: validateStudent.data.phone,
-          adressId: addressCreated.id,
-          parentId: parentCreated.id,
+          schooling: validateStudent.data.schooling,
+
+          Address: {
+            create: {
+              complement: validateStudent.data.address.complement,
+              neighborhood: validateStudent.data.address.neighborhood,
+              number: validateStudent.data.address.number,
+              street: validateStudent.data.address.street,
+            },
+          },
+          Parent: {
+            connectOrCreate: {
+              where: {
+                cpf: validateStudent.data.parent.cpf,
+              },
+              create: {
+                name: validateStudent.data.parent.name,
+                cpf: validateStudent.data.parent.cpf,
+                rg: validateStudent.data.parent.rg,
+                phone: validateStudent.data.parent.phone,
+              },
+            },
+          },
+        },
+        include: {
+          Address: true,
+          Parent: true,
         },
       });
+
       return student;
     }
-
-    const addressCreated = await prismaClient.address.create({
-      data: {
-        complement: validateStudent.data.address.complement,
-        neighborhood: validateStudent.data.address.neighborhood,
-        number: validateStudent.data.address.number,
-        street: validateStudent.data.address.street,
-      },
-    });
 
     const student = await prismaClient.student.create({
       data: {
@@ -94,7 +87,15 @@ class CreateStudentUseCase {
         period,
         rg,
         phone,
-        adressId: addressCreated.id,
+        schooling: validateStudent.data.schooling,
+        Address: {
+          create: {
+            complement: validateStudent.data.address.complement,
+            neighborhood: validateStudent.data.address.neighborhood,
+            number: validateStudent.data.address.number,
+            street: validateStudent.data.address.street,
+          },
+        },
       },
     });
     return student;

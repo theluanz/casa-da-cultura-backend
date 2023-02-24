@@ -3,7 +3,7 @@ import { CreateStudentUseCase } from './CreateStudentUseCase';
 
 class CreateStudentController {
   async handle(request: Request, response: Response) {
-    const { bornDate, cpf, address, name, parent, period, rg, phone } = request.body;
+    const { bornDate, cpf, address, name, parent, period, rg, phone, schooling } = request.body;
 
     const createStudentUseCase = new CreateStudentUseCase();
 
@@ -16,6 +16,7 @@ class CreateStudentController {
       period,
       rg,
       phone,
+      schooling,
     });
     return response.status(201).json(newStudent);
   }

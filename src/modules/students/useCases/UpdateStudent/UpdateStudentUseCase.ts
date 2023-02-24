@@ -44,52 +44,66 @@ class UpdateStudentUseCase {
       throw new AppError('Aluno não encontrado', 404);
     }
 
-    const _address = await prismaClient.address.findUnique({
-      where: {
-        id: studentExists.addressId,
-      },
-    });
-
-    if (
-      studentExists.parentId &&
-      (validateStudent.data.parent?.name ||
-        validateStudent.data.parent?.cpf ||
-        validateStudent.data.parent?.rg ||
-        validateStudent.data.parent?.phone)
-    ) {
-      await prismaClient.parent.update({
+    if (studentExists.parentId) {
+      const student = await prismaClient.student.update({
         where: {
-          id: studentExists.parentId,
+          id: studentExists.id,
         },
         data: {
-          name: validateStudent.data.parent?.name,
-          cpf: validateStudent.data.parent?.cpf,
-          rg: validateStudent.data.parent?.rg,
-          phone: validateStudent.data.parent?.phone,
+          active: validateStudent.data.active,
+          bornDate: validateStudent.data.bornDate,
+          cpf: validateStudent.data.cpf,
+          name: validateStudent.data.name,
+          phone: validateStudent.data.phone,
+          rg: validateStudent.data.rg,
+          period: validateStudent.data.period,
+          schooling: validateStudent.data.schooling,
+
+          Address: {
+            update: {
+              complement: validateStudent.data.address?.complement,
+              neighborhood: validateStudent.data.address?.neighborhood,
+              number: validateStudent.data.address?.number,
+              street: validateStudent.data.address?.street,
+            },
+          },
+
+          Parent: {
+            update: {
+              name: validateStudent.data.parent?.name,
+              cpf: validateStudent.data.parent?.cpf,
+              rg: validateStudent.data.parent?.rg,
+              phone: validateStudent.data.parent?.phone,
+            },
+          },
+        },
+        include: {
+          Address: true,
+          Parent: true,
         },
       });
+      return student;
     }
-
     const student = await prismaClient.student.update({
       where: {
         id: studentExists.id,
       },
       data: {
-        active: validateStudent.data.active || studentExists.active,
-        bornDate: validateStudent.data.bornDate || studentExists.bornDate,
-        cpf: validateStudent.data.cpf || studentExists.cpf,
-        name: validateStudent.data.name || studentExists.name,
-        phone: validateStudent.data.phone || studentExists.phone,
-        rg: validateStudent.data.rg || studentExists.rg,
-        period: validateStudent.data.period || studentExists.period,
-        schooling: validateStudent.data.schooling || studentExists.schooling,
+        active: validateStudent.data.active,
+        bornDate: validateStudent.data.bornDate,
+        cpf: validateStudent.data.cpf,
+        name: validateStudent.data.name,
+        phone: validateStudent.data.phone,
+        rg: validateStudent.data.rg,
+        period: validateStudent.data.period,
+        schooling: validateStudent.data.schooling,
 
         Address: {
           update: {
-            complement: validateStudent.data.address?.complement || _address?.complement,
-            neighborhood: validateStudent.data.address?.neighborhood || _address?.neighborhood,
-            number: validateStudent.data.address?.number || _address?.number,
-            street: validateStudent.data.address?.street || _address?.street,
+            complement: validateStudent.data.address?.complement,
+            neighborhood: validateStudent.data.address?.neighborhood,
+            number: validateStudent.data.address?.number,
+            street: validateStudent.data.address?.street,
           },
         },
       },
@@ -97,7 +111,7 @@ class UpdateStudentUseCase {
         Address: true,
       },
     });
-    
+
     return student;
   }
 }
