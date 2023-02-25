@@ -6,6 +6,10 @@ class ReadStudentUseCase {
       where: {
         id,
       },
+      include: {
+        Address: true,
+        Parent: true,
+      },
     });
 
     return student;

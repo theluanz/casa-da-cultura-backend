@@ -7,6 +7,10 @@ class ReadStudentsUseCase {
 
       take: 10,
       skip: +(page * 10),
+      include: {
+        Address: true,
+        Parent: true,
+      },
     });
     return students;
   }
